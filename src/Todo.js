@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './Todo.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 class Todo extends Component {
   constructor(props){
@@ -16,12 +18,6 @@ class Todo extends Component {
   }
   toggleForm = () => {
     this.setState({isEditing: !this.state.isEditing});
-  }
-  toggleCompletion = (id) => {
-    const updatedTodos = this.state.todos.map(todo => {
-      return todo.id === id ? {...todo, completed: !todo.completed} : todo;
-    });
-    this.setState({ todos: updatedTodos });
   }
   handleUpdate = e => {
     e.preventDefault();
@@ -40,8 +36,8 @@ class Todo extends Component {
     let result;
     if (this.state.isEditing){
       result = (
-        <div>
-          <form onSubmit={this.handleUpdate}>
+        <div className='Todo'>
+          <form className="Todo-edit-form" onSubmit={this.handleUpdate}>
             <input type='text' value={this.state.task} name='task' onChange={this.handleChange}></input>
             <button>Save</button>
           </form>
@@ -49,12 +45,23 @@ class Todo extends Component {
       )
     } else {
       result = (
-        <div>
-        <button onClick={this.toggleForm}>Edit</button>
-        <button onClick={this.handleRemove}>X</button>
-        <li onClick={this.handleToggle} className={this.props.completed ? 'completed' : ''}>{this.props.task}</li>
+        <div className='Todo'>
+          <li 
+            onClick={this.handleToggle} 
+            className={this.props.completed ? 'Todo-task completed' : 'Todo-task'}
+          >
+            {this.props.task}
+          </li>
+          <div className="Todo-buttons">
+            <button onClick={this.toggleForm}>
+              <FontAwesomeIcon icon='pen' />
+            </button>
+            <button onClick={this.handleRemove}>
+              <FontAwesomeIcon icon='trash' />
+            </button>
+          </div>
       </div>
-      )
+      );
     }
     return result;
   }
